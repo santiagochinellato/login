@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Sign In with Auth0</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+</head>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&display=swap');
+
+  body,
+  html {
+    height: 100%;
+    background-color: #E5E5E5;
+    font-family: 'Montserrat', sans-serif;
+
+  }
+
+  /** Para evitar el sombreado cuando el input tiene el foco **/
+  .form-control:focus {
+    box-shadow: none !important;
+    border: 2px solid #9A0063
+  }
+
+  .btn.active.focus,
+  .btn.active:focus,
+  .btn.focus,
+  .btn:active.focus,
+  .btn:active:focus,
+  .btn:focus {
+    outline: none !important;
+    outline-offset: 0px !important;
+    /* background-color: transparent !important; */
+    box-shadow: none !important;
+  }
+
+  .containerLoginAndText {
+    margin: auto;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .welcomeContainer {
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(157.9deg, #762057 0.72%, #F0009A 98.91%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+
+  .welcomeContainer div {
+    width: 80%;
+  }
+
+  .welcomeContainer div h1 {
+    width: 90%;
+    font-size: 40px;
+    margin-bottom: 30px;
+    font-weight: 700;
+  }
+
+  .welcomeContainer div h2 {
+    width: 90%;
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  .welcomeContainer div h3 {
+    font-size: 24px;
+    margin: 25px 0px;
+    font-weight: 700;
+
+  }
+
+  .welcomeContainer div ul li {
+    margin: 20px 0px;
+  }
+
+  .login-container {
+    width: 40%;
+    height: 100%;
+  }
+
+  .login-box {
+    /* position: absolute; */
+    /* top: 50%; */
+    height: 100%;
+    /* transform: translateY(-50%); */
+    padding: 15px;
+    background-color: #fff;
+    /* box-shadow: 0px 5px 5px #ccc; */
+    border-top: 1px solid #e9e9e9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .login-header {
+    text-align: center;
+  }
+
+  .titlteLogin {
+    color: #494949;
+    font-weight: 700;
+    font-size: 26px;
+  }
+
+  .login-header img {
+    width: 75px;
+  }
+
+  #error-message {
+    display: none;
+    white-space: break-spaces;
+  }
+
+  form {
+    margin: 0 auto;
+    width: 75%;
+  }
+
+  .form-group {
+    margin: 5% 0;
+  }
+
+  .form-control {
+    height: 40px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #6D6C6C;
+  }
+
+  .btn-primary {
+    margin-top: 10%;
+    margin-bottom: 5%;
+    height: 40px;
+    background-color: #762057;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .btn-primary:hover {
+    background-color: #9A0063;
+  }
+
+  .btn-primary:focus {
+    background-color: #9A0063 !important;
+    border-color: none !important;
+    border: 0px
+  }
+
+  .btn-danger:hover {
+    margin-top: 10%;
+    margin-bottom: 5%;
+    height: 40px;
+    background-color: #9A0063;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .btn-danger {
+    background-color: #762057;
+  }
+
+  .btn-default {
+    width: fit-content;
+    color: #9A0063;
+    border-radius: 8px;
+    height: 40px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .btn-default:hover {
+    color: #9A0063;
+    background-color: #fff;
+    border: none !important;
+  }
+
+  .btn-default:focus {
+    border: 1px solid transparent !important;
+    border-color: transparent !important;
+    background-color: transparent !important;
+  }
+
+  .btn-RecoveryPass {
+    width: 100% !important;
+    margin-bottom: 20%;
+    text-decoration-line: underline;
+  }
+
+  .containerReg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .containerReg p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+
+
+  .containerWelcomeMobile {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+
+    body,
+    html {
+      background: linear-gradient(157.9deg, #762057 0.72%, #F0009A 98.91%);
+
+    }
+
+    .containerLoginAndText {
+      flex-direction: column-reverse;
+      width: 100%;
+    }
+
+    .welcomeContainer {
+      width: 100%;
+      height: 30vh;
+      background-color: transparent;
+    }
+
+    .welcomeContainer div {
+      width: 85%;
+    }
+
+    .login-container {
+      width: 100%;
+      /* height: auto; */
+    }
+
+    form {
+      margin: 0 auto;
+      width: 100%;
+      height: auto;
+    }
+
+    .login-box {
+      height: 100%;
+      border-radius: 40px 40px 0px 0px;
+    }
+
+    .titlteLogin {
+      margin: 3% 0
+    }
+
+    .welcomeContainer div h1 {
+      display: none;
+    }
+
+    .welcomeContainer div h3 {
+      display: none;
+
+    }
+
+    .listTwo {
+      display: none;
+    }
+
+    hr {
+      display: none;
+    }
+
+    .containerWelcomeMobile {
+      width: 100%;
+      height: 15vh;
+      display: flex;
+      color: white;
+      font-weight: 600;
+      font-size: 22px;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      align-content: center;
+    }
+
+    .containerArrow {
+      display: flex;
+      justify-content: center;
+      align-content: flex-end;
+      margin: 0 8% 0 5%;
+    }
+
+    .containerArrow svg {
+      color: white;
+    }
+
+    .containerWelcomeMobile h2 {
+      width: 90%;
+      color: white;
+      font-weight: 600;
+      font-size: 5vw;
+      margin: 0;
+    }
+
+    .containerReg {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .welcomeContainer div h2 {
+      width: 100%;
+      font-size: 16px;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+  }
+</style>
+
+<body>
+  <div class="containerLoginAndText">
+    <div class="welcomeContainer ">
+      <div>
+        <h1>¡Te damos la bienvenida
+          a Bonvivir!</h1>
+        <h2>Logueate y empezá a vivir la experiencia de ser parte de esta comunidad.</h2>
+        <p>Vas a poder:</p>
+        <ul class="listOne">
+          <li>Comprar más rápido en tienda</li>
+          <li>Agregar productos a tus favoritos</li>
+        </ul>
+        <hr>
+        <h3>¿Sos socio del Club?</h3>
+        <ul class="listTwo">
+          <li>Podés ver el detalle de tu suscripción</li>
+          <li>Ver descuentos exclusivos en la tienda online</li>
+          <li>Ver tus compras realizadas</li>
+        </ul>
+      </div>
+    </div>
+    <div class="login-container">
+      <div class=" login-box">
+        <div class="login-header">
+          <!-- <img src="https://cdn.auth0.com/styleguide/1.0.0/img/badge.svg" /> -->
+          <h3 class="titlteLogin">Iniciar sesión</h3>
+          <!-- <h5>PLEASE LOG IN</h5> -->
+        </div>
+        <div id="error-message" class="alert alert-danger"></div>
+        <form onsubmit="return false;" method="post">
+          <div class="form-group">
+            <label for="name">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Ingresá tu emaill">
+          </div>
+          <div class="form-group">
+            <label for="name">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Ingresá tu contraseña">
+          </div>
+          <div class="captcha-container form-group"></div>
+          <button type="submit" id="btn-login" class="btn btn-primary btn-block">
+            Ingresar
+          </button>
+          <!-- boton para recuperar la contraseña -->
+          <button type="button" id="" class="btn btn-default btn-block btn-RecoveryPass">Olvidé mi contraseña</button>
+          <!-- boton para recuperar la contraseña -->
+          <div class="containerReg">
+            <p>¿Todavía no tenés una cuenta?</p>
+            <button type="button" id="btn-signup" class="btn btn-default btn-block">
+              Resgistrarte acá
+            </button>
+          </div>
+          <!-- <button type="button" id="btn-google" class="btn btn-default btn-danger btn-block">
+            Log In with Google
+          </button> -->
+        </form>
+      </div>
+    </div>
+    <div class="containerWelcomeMobile">
+      <a href="" class="containerArrow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+          fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+        </svg></a>
+      <h2>¡Bienvenid@ a Bonvivir!</h2>
+    </div>
+  </div>
+  <!--[if IE 8]>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ie8/0.2.5/ie8.js"></script>
+  <![endif]-->
+
+  <!--[if lte IE 9]>
+  <script src="https://cdn.auth0.com/js/polyfills/1.0/base64.min.js"></script>
+  <script src="https://cdn.auth0.com/js/polyfills/1.0/es5-shim.min.js"></script>
+  <![endif]-->
+
+  <script src="https://cdn.auth0.com/js/auth0/9.18/auth0.min.js"></script>
+  <script src="https://cdn.auth0.com/js/polyfills/1.0/object-assign.min.js"></script>
+  <script>
+    window.addEventListener('load', function () {
+
+      var config = JSON.parse(
+        decodeURIComponent(escape(window.atob('@@config@@')))
+      );
+
+      var leeway = config.internalOptions.leeway;
+      if (leeway) {
+        var convertedLeeway = parseInt(leeway);
+
+        if (!isNaN(convertedLeeway)) {
+          config.internalOptions.leeway = convertedLeeway;
+        }
+      }
+
+      var params = Object.assign({
+        overrides: {
+          __tenant: config.auth0Tenant,
+          __token_issuer: config.authorizationServer.issuer
+        },
+        domain: config.auth0Domain,
+        clientID: config.clientID,
+        redirectUri: config.callbackURL,
+        responseType: 'code'
+      }, config.internalOptions);
+
+      var webAuth = new auth0.WebAuth(params);
+      var databaseConnection = 'Username-Password-Authentication';
+      var captcha = webAuth.renderCaptcha(
+        document.querySelector('.captcha-container')
+      );
+
+      function login(e) {
+        e.preventDefault();
+        var button = this;
+        var username = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+        button.disabled = true;
+        webAuth.login({
+          realm: databaseConnection,
+          username: username,
+          password: password,
+          captcha: captcha.getValue()
+        }, function (err) {
+          if (err) displayError(err);
+          button.disabled = false;
+        });
+      }
+
+      function signup() {
+        var button = this;
+        var email = document.getElementById('email').value;
+        var password = document.getElementById('password').value;
+
+        button.disabled = true;
+        webAuth.redirect.signupAndLogin({
+          connection: databaseConnection,
+          email: email,
+          password: password,
+          captcha: captcha.getValue()
+        }, function (err) {
+          if (err) displayError(err);
+          button.disabled = false;
+        });
+      }
+
+      function loginWithGoogle() {
+        webAuth.authorize({
+          connection: 'google-oauth2'
+        }, function (err) {
+          if (err) displayError(err);
+        });
+      }
+
+      function displayError(err) {
+        captcha.reload();
+        var errorMessage = document.getElementById('error-message');
+        errorMessage.innerHTML = err.policy || err.description;
+        errorMessage.style.display = 'block';
+      }
+
+      document.getElementById('btn-login').addEventListener('click', login);
+      document.getElementById('btn-google').addEventListener('click', loginWithGoogle);
+      document.getElementById('btn-signup').addEventListener('click', signup);
+    });
+  </script>
+</body>
+
+</html>
